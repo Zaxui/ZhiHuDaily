@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">假知乎</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_about">关于</string>
+</resources>

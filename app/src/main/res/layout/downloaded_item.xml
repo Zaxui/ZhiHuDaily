@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFF0F0F0"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/item_background_selector_light"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="41dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:drawable/ic_input_get"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:text="如何看待当下这种越来越普遍的“沉默”人格？"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFF0F0F0"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:background="@android:color/holo_orange_light">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_topic_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="  长 评 论"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:id="@+id/iv_topic_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@android:drawable/arrow_down_float"
+                />
+        </RelativeLayout>
+
+    </FrameLayout>
+</LinearLayout>

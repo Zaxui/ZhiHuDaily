@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFF9F9F9"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/item_background_selector_light"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <ImageView
+                android:id="@+id/iv_comment"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:scaleType="fitXY"
+                android:background="@drawable/ic_menu_camera"/>
+
+            <TextView
+                android:id="@+id/name_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="我只是在假装一个貌似比较长的用户id"
+                android:textSize="17sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_toStartOf="@+id/iv_stars_comment"
+                android:layout_toEndOf="@+id/iv_comment"/>
+
+            <ImageView
+                android:id="@+id/iv_stars_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/tv_stars_comment"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_stars_comment"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:padding="10dp"
+                android:text="13"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/content_comment"
+                android:layout_below="@+id/name_comment"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:textSize="15sp"
+                android:textColor="@android:color/black"
+                android:text="    我只是在假装一段不长不短的评论，但是只有一句不太好所以要许多写几句。所以要许多写几句。所以要许多写几句。所以要许多写几句。
+    也许还得换行分段，老麻烦了。"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/date_comment"
+                android:layout_below="@+id/content_comment"
+                android:layout_margin="10dp"
+                android:textStyle="italic"
+                android:text="2017年8月3日 12:34:45"
+                />
+
+
+        </RelativeLayout>
+
+    </FrameLayout>
+</LinearLayout>
