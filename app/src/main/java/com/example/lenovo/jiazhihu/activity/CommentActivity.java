@@ -43,8 +43,9 @@ public class CommentActivity extends AppCompatActivity {
     private CommentsItemAdapter mAdapter;
     private List<Comment> mComments;
     private String id;
-    private Handler handler = new Handler();
+    //private static Handler handler = new Handler();
     private int shortTopicPos = 1;//短评论位置
+    private boolean isLoading = false;//正在加载，防止快速点击造成的异步加载混乱
     private boolean isShortLoaded = false;//短评论是否加载
     private boolean isLongLoaded = false;
 
@@ -78,28 +79,33 @@ public class CommentActivity extends AppCompatActivity {
                 int t = mAdapter.getItemViewType(position);
                 //评论topic点击事件
                 if (t != CommentsItemAdapter.ITEM_TYPE.ITEM_TYPE_COMMENT.ordinal()) {
-                    MyApplication.getNetCondition();
-                    ImageView iv_topic_comment = (ImageView) view.findViewById(R.id.iv_topic_comment);
-                    if (t == 1){
-                        if (isLongLoaded){
-                            mComments.subList(1, shortTopicPos).clear();
-                            mAdapter.notifyDataSetChanged();
-                            shortTopicPos = 1;
-                            isLongLoaded = false;
-                            iv_topic_comment.setBackground(getResources().getDrawable(arrow_up_float));
-                        }else {
-                            loadComments(true);
-                            iv_topic_comment.setBackground(getResources().getDrawable(arrow_down_float));
-                        }
-                    }if (t ==2){
-                        if (isShortLoaded){
-                            mComments.subList(shortTopicPos+1, mComments.size()).clear();
-                            mAdapter.notifyDataSetChanged();
-                            isShortLoaded = false;
-                            iv_topic_comment.setBackground(getResources().getDrawable(arrow_up_float));
-                        }else {
-                            loadComments(false);
-                            iv_topic_comment.setBackground(getResources().getDrawable(arrow_down_float));
+                    if (!isLoading){
+                        isLoading = true;
+                        MyApplication.getNetCondition();
+                        ImageView iv_topic_comment = (ImageView) view.findViewById(R.id.iv_topic_comment);
+                        if (t == 1){
+                            if (isLongLoaded){
+                                mComments.subList(1, shortTopicPos).clear();
+                                mAdapter.notifyDataSetChanged();
+                                shortTopicPos = 1;
+                                isLongLoaded = false;
+                                iv_topic_comment.setBackground(getResources().getDrawable(arrow_up_float));
+                                isLoading = false;
+                            }else {
+                                loadComments(true);
+                                iv_topic_comment.setBackground(getResources().getDrawable(arrow_down_float));
+                            }
+                        }if (t ==2){
+                            if (isShortLoaded){
+                                mComments.subList(shortTopicPos+1, mComments.size()).clear();
+                                mAdapter.notifyDataSetChanged();
+                                isShortLoaded = false;
+                                iv_topic_comment.setBackground(getResources().getDrawable(arrow_up_float));
+                                isLoading = false;
+                            }else {
+                                loadComments(false);
+                                iv_topic_comment.setBackground(getResources().getDrawable(arrow_down_float));
+                            }
                         }
                     }
                 }
@@ -132,75 +138,64 @@ public class CommentActivity extends AppCompatActivity {
      * @param isLong 加载类型是否为长评论，false则为加载短评论
      */
     private void loadComments(final boolean isLong){
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                String url;
-                if (isLong){
-                    url = "/long-comments";
-                }
-                else{
-                    url = "/short-comments";
-                }
-                OkHttpUtil.getAsyncStringByNetCondition("http://news-at.zhihu.com/api/4/story/" + id +url,
-                        new OkHttpUtil.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                requestFail();
-                            }
+        String url;
+        if (isLong){
+            url = "/long-comments";
+        }
+        else{
+            url = "/short-comments";
+        }
+        OkHttpUtil.getAsyncStringByNetCondition("http://news-at.zhihu.com/api/4/story/" + id +url,
+                new OkHttpUtil.DataCallBack() {
+                    @Override
+                    public void requestFailure(Request request, IOException e) {
+                        requestFail();
+                    }
 
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-                                if (result.equals(""))
-                                {
-                                    requestFail();
-                                }else {
-                                    parseCommentJson(result, isLong);
-                                }
-                            }
-                        });
-            }
-        };
-        thread.start();
+                    @Override
+                    public void requestSuccess(String result) throws Exception {
+                        if (result.equals(""))
+                        {
+                            requestFail();
+                        }else {
+                            parseCommentJson(result, isLong);
+                        }
+                    }
+                });
     }
 
+
+
     private void requestFail(){
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(CommentActivity.this, "请求失败，请检查网络后重试", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Toast.makeText(CommentActivity.this, "请求失败，请检查网络后重试", Toast.LENGTH_SHORT).show();
+        isLoading = false;
     }
 
     private void parseCommentJson(String responseString, final boolean isLong) {
 
         Gson gson = new Gson();
         final Comments temp = gson.fromJson(responseString, Comments.class);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (temp.getComments() == null){
-                    //在这里写下 返回空评论时应该做的事
-                    return;
-                }else{
-                    //在适当位置插入评论
-                    if (isLong) {
-                        mComments.addAll(1, temp.getComments());
-                        isLongLoaded = true;
-                        shortTopicPos = temp.getComments().size() + 1;
-                    }else {
-                        mComments.addAll(temp.getComments());
-                        isShortLoaded = true;
-                    }
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mProgressBar.setVisibility(View.GONE);
-                    mAdapter.notifyDataSetChanged();
-                    //短评论加载完自动下滑
-                    if (!isLong)
-                        mRecyclerView.smoothScrollToPosition(shortTopicPos + 3);
-                }
+        if (temp.getComments() == null){
+            //在这里写下 返回空评论时应该做的事
+            return;
+        }else{
+            //在适当位置插入评论
+            if (isLong) {
+                mComments.addAll(1, temp.getComments());
+                isLongLoaded = true;
+                shortTopicPos = temp.getComments().size() + 1;
+            }else {
+                mComments.addAll(temp.getComments());
+                isShortLoaded = true;
             }
-        });
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+            mAdapter.notifyDataSetChanged();
+            //短评论加载完自动下滑
+            if (!isLong)
+                mRecyclerView.smoothScrollToPosition(shortTopicPos + 3);
+        }
+        isLoading = false;
     }
+
 }

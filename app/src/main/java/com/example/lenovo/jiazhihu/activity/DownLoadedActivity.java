@@ -206,7 +206,7 @@ public class DownLoadedActivity extends AppCompatActivity {
         mEdit.setText("编辑");
         isSelecting = false;
         mCheckBox.setChecked(false);
-        mLayoutDelete.setVisibility(View.INVISIBLE);
+        mLayoutDelete.setVisibility(View.GONE);
         mAdapter.setSelecting(isSelecting);
         mAdapter.SelectNull();
         mAdapter.notifyDataSetChanged();

@@ -10,22 +10,25 @@ import android.support.v7.widget.RecyclerView;
 public abstract class EndLessOnScrollListener extends RecyclerView.OnScrollListener {
     //声明一个LinearLayoutManager
     private LinearLayoutManager mLinearLayoutManager;
-    // 当前页，从0开始
-    private int currentPage = 0;
+    // 当前页，从0开始，本项目不需要
+    //private int currentPage = 0;
     // 已经加载出来的Item的数量
     private int totalItemCount;
     //主要用来存储上一个totalItemCount
     private int previousTotal = 0;
     // 是否正在上拉数据
     private boolean loading = true;
+    //加载失败或重新加载时重置监听器状态
     public void reset(){
         loading = false;
         totalItemCount = mLinearLayoutManager.getItemCount();
         previousTotal = totalItemCount;
     }
+
     public EndLessOnScrollListener(LinearLayoutManager linearLayoutManager) {
         this.mLinearLayoutManager = linearLayoutManager;
     }
+
     @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
         totalItemCount = mLinearLayoutManager.getItemCount();
@@ -38,8 +41,9 @@ public abstract class EndLessOnScrollListener extends RecyclerView.OnScrollListe
         }
 
         if (!loading && totalItemCount <= mLinearLayoutManager.findLastVisibleItemPosition()+1){
-            currentPage ++;
-            onLoadMore(currentPage);
+            //currentPage ++;
+            //onLoadMore(currentPage);
+            onLoadMore();
             loading = true;
         }
     }
@@ -47,6 +51,6 @@ public abstract class EndLessOnScrollListener extends RecyclerView.OnScrollListe
      * 提供一个抽闲方法，在Activity中监听到这个EndLessOnScrollListener
      * 并且实现这个方法
      * */
-    public abstract void onLoadMore(int currentPage);
+    public abstract void onLoadMore();
 }
 

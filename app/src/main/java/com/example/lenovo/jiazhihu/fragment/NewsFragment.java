@@ -52,7 +52,15 @@ public class NewsFragment extends BaseFragment {
     private String urlId = "";
 
     public void setNewsType(String id) {
+        if (id.equals(urlId)){
+            return;
+        }
         urlId = id;
+        if (mStoriesEntities != null){
+            mStoriesEntities.clear();
+            mAdapter.notifyDataSetChanged();
+            mRecyclerView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -94,7 +102,8 @@ public class NewsFragment extends BaseFragment {
     }
 
     public  void scroolToTop(){
-        mRecyclerView.scrollToPosition(0);
+        if (mStoriesEntities != null)
+                mRecyclerView.scrollToPosition(0);
     }
 
     @Override
@@ -174,7 +183,6 @@ public class NewsFragment extends BaseFragment {
         mHead.addAll(head);
         mAdapter.notifyDataSetChanged();
         mRecyclerView.setVisibility(View.VISIBLE);
-        scroolToTop();
 //            }
 //        });
     }

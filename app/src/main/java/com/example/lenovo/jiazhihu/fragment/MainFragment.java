@@ -2,6 +2,8 @@ package com.example.lenovo.jiazhihu.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lenovo.jiazhihu.others.EndLessOnScrollListener;
 import com.example.lenovo.jiazhihu.others.ItemClickListener;
@@ -50,7 +51,7 @@ public class MainFragment extends BaseFragment {
     private List<Latest.TopStoriesEntity> mHead;//轮播图数据实体
     private Latest latest;//今日热闻消息容器
     private Before before;//往日新闻消息容器
-    //private static Handler handler = new Handler();//线程handler
+    private static Handler handler = new Handler();//线程handler
     private String date;//记录往日新闻日期
 
     //private final MyThread myThread = new MyThread(this);
@@ -117,7 +118,7 @@ public class MainFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         //添加上拉加载的监听器
         mEndLessOnScrollListener = new EndLessOnScrollListener(mLayoutManager) {
-            @Override public void onLoadMore(int currentPage) {
+            @Override public void onLoadMore() {
                 loadStories(false);
             }
         };
@@ -156,7 +157,8 @@ public class MainFragment extends BaseFragment {
     }
 
     public  void scroolToTop(){
-        mRecyclerView.scrollToPosition(0);
+        if (mStoriesEntities != null)
+            mRecyclerView.scrollToPosition(0);
     }
 
     @Override
@@ -231,9 +233,19 @@ public class MainFragment extends BaseFragment {
 //            public void run() {
         mProgressBar.setVisibility(View.GONE);
         mLayoutFail.setVisibility(View.VISIBLE);
-        Toast.makeText(mActivity, "网络不佳", Toast.LENGTH_SHORT).show();
+        Snackbar sb = Snackbar.make(mRecyclerView, "这个网络状况怕是加载不动呦~", Snackbar.LENGTH_SHORT);
+        sb.show();
 //            }
 //        });
+
+        //推迟3s通知监听器刷新
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mEndLessOnScrollListener.reset();
+            }
+        }, 3000);
+
     }
 
     private void parseStoriesJson(String responseString, boolean isLatest){
@@ -260,7 +272,7 @@ public class MainFragment extends BaseFragment {
             mHead.addAll(head);
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setVisibility(View.VISIBLE);
-            scroolToTop();
+            mEndLessOnScrollListener.reset();
 //                }
 //            });
         }else {

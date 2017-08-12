@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             isMain = true;
             replaceFragment();
-            mMainFragment.refreshData();
+            mMainFragment.scroolToTop();
         } else if (id == R.id.nav_2) {
             loadNewsFragment("2");
         } else if (id == R.id.nav_3) {
@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity
     private void loadNewsFragment(String s){
         isMain = false;
         replaceFragment();
+        mNewsFragment.scroolToTop();
         mNewsFragment.setNewsType(s);
         mNewsFragment.refreshData();
     }
