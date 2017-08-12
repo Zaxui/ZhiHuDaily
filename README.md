@@ -1,5 +1,5 @@
 # ZhiHuDaily
-利用知乎API做的练手小项目,适合新手参考学习,不用于商业用途  
+利用知乎API做的练手小项目,适合新手参考学习,请勿用于商业用途  
 如涉及版权问题请联系我，如发现错误或有改进建议欢迎指出  
 ## 鸣谢  
   感谢知乎  
@@ -21,7 +21,7 @@
         6、网络请求自动缓存、图片2级缓存
         7、缓存大小的查看、清除缓存
 ## 界面  
-整体采用Material Design风格，简洁流畅
+整体采用Material Design风格，简洁流畅，容错处理良好
 ### 1、主界面
 ![Image text](https://github.com/Zaxui/JiaZhiHu/blob/master/Screenshots/0.png)  
 ![Image text](https://github.com/Zaxui/JiaZhiHu/blob/master/Screenshots/1.png)  
