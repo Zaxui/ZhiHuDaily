@@ -176,7 +176,7 @@ public class DownLoadedActivity extends AppCompatActivity {
         }else {
             mEdit.setVisibility(View.GONE);
             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_empty_loaded);
-            linearLayout.setVisibility(View.VISIBLE);
+            linearLayout.setVisibility(View.GONE);
         }
         cursor.close();
         db.close();
