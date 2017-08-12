@@ -34,5 +34,7 @@
 ![Image text](https://github.com/Zaxui/JiaZhiHu/blob/master/Screenshots/5.png)  
 ### 5、热门评论  
 ![Image text](https://github.com/Zaxui/JiaZhiHu/blob/master/Screenshots/6.png)  
+## 下载体验  
+  [apk下载](https://github.com/Zaxui/ZhiHuDaily/blob/master/app/app-release.apk)
 ## 联系我
 		zhang.xui@foxmail.com
